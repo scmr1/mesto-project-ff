@@ -11,6 +11,7 @@
 <body class="page">
 <div class="page__content">
   <header class="header page__section">
+    <link rel="shortcut icon" href="#" type="image/x-icon">
     <img src="<%=require('./images/logo.svg')%>" alt="Логотип проекта масто" class="logo header__logo">
   </header>
   <main class="content">
@@ -50,7 +51,7 @@
       <h3 class="popup__title">Новое место</h3>
       <form class="popup__form" name="new-place">
         <input type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required>
-        <input type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
+        <input type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" href="#" required>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>
