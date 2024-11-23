@@ -10,8 +10,8 @@
   margin-bottom: 10px;
 }
 
-.popup__input:last-of-type {
-  margin-bottom: 0;
+.popup__input:not(:placeholder-shown):not(:focus):invalid {
+  border-color: rgba(255, 0, 0, 1);
 }
 
 @media screen and (max-width: 568px) {

@@ -11,7 +11,27 @@
   border-radius: 2px;
   border: none;
   transition: visibility 0s, background 0.3s;
-  margin-top: 48px;
+  margin-top: 38px;
+}
+
+.popup__button:hover:not(.popup__button_disabled) {
+  background: rgba(0, 0, 0, 0.8);
+  color: rgba(255, 255, 255, 1);
+}
+
+.popup__error_visible {
+  color: rgba(255, 0, 0, 1);
+  display: block;
+  font-size: 12px;
+  margin-top: -5px;
+  position: absolute;
+}
+
+.popup__button_disabled {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: white;
+  color: rgba(0, 0, 0, 0.2);
+  cursor: default;
 }
 
 .popup__button:hover {
