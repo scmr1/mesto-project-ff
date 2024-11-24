@@ -1,4 +1,4 @@
-import request from './modal';
+import request from '../utils/utils';
 
 export const getUser = () => {
     return request('/users/me')

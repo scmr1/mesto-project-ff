@@ -2,12 +2,12 @@ import { like, dislike, removeCard } from "./api";
 
 const elementTemplate = document.querySelector('#card-template').content;
 
-export function createCard(id, title, image, likes, deleteHandler, likeHandler, openImagePopup) {
+export function createCard(id, title, image, likes, deleteHandler, likeHandler, openImagePopup, currentUserId) {
     const elementPlace = elementTemplate.querySelector('.card').cloneNode(true);
     const cardImage = elementPlace.querySelector('.card__image');
     const cardDeleteButton = elementPlace.querySelector('.card__delete-button');
     const cardLikeButton = elementPlace.querySelector('.card__like-button');
-    const isLiked = Boolean(likes.find((item) => item._id === window.user._id));
+    const isLiked = Boolean(likes.find((item) => item._id === currentUserId));
 
     elementPlace.id = id;
     cardImage.src = image;
@@ -32,22 +32,24 @@ export function createCard(id, title, image, likes, deleteHandler, likeHandler, 
     return elementPlace;
 }
 
-export function deleteCard(card) {
-    removeCard(card.id)
-        .then(data => {
-            card.remove();
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+export async function deleteCard(card) {
+    try {
+        await removeCard(card.id);
+        return card.remove();
+    } catch (err) {
+        return console.error(err);
+    }
 }
 
-function cardLikeHandler(card, cardData) {
+function cardLikeHandler(card, cardData, currentUserId) {
     const cardLikeButton = card.querySelector('.card__like-button');
     const likeCount = cardData.likes.length;
-    const isLiked = Boolean(cardData.likes.find((item) => item._id === window.user._id));
+    const isLiked = Boolean(cardData.likes.find((item) => item._id === currentUserId));
+
+    // Обновляем количество лайков
     card.querySelector('.card__like-count').textContent = likeCount;
 
+    // Обновляем состояние кнопки лайка
     if (isLiked) {
         cardLikeButton.classList.add('card__like-button_is-active');
     } else {

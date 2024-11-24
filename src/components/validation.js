@@ -14,11 +14,21 @@ const hideInputError = (formInput, config) => {
 };
 
 function getInputErrorText(input) {
-    if (input.required && input.value.length === 0 && input.dataset.errorEmpty) return input.dataset.errorEmpty;
-    if (input.minLength && input.value.length < input.minLength && input.dataset.errorMinLength) return input.dataset.errorMinLength
-    if (input.pattern && !new RegExp(input.pattern).test(input.value) && input.dataset.errorPattern) return input.dataset.errorPattern
-    if (input.validationMessage) return input.validationMessage;
+    if (input.validity.valueMissing && input.dataset.errorEmpty) {
+        return input.dataset.errorEmpty;
+    }
+    if (input.validity.tooShort && input.dataset.errorMinLength) {
+        return input.dataset.errorMinLength;
+    }
+    if (input.validity.patternMismatch && input.dataset.errorPattern) {
+        return input.dataset.errorPattern;
+    }
+    if (input.validity.typeMismatch || input.validity.customError) {
+        return input.validationMessage;
+    }
+    return '';
 }
+
 
 function checkFormValidity(form, config) {
     const isFormValid = form.checkValidity();

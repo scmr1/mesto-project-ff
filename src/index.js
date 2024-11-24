@@ -44,15 +44,15 @@ function setPageUserData(name, about, avatarUrl) {
     profileImageElement.style.backgroundImage = `url(${avatarUrl})`;
 }
 
-window.user = null;
+export let currentUserId = null;
 Promise.all([getUser(), getInitialCards()])
     .then(([userData, initialCards]) => {
-        window.user = userData;
+        currentUserId = userData._id;
         setPageUserData(userData.name, userData.about, userData.avatar);
 
         initialCards.forEach((item) => {
-            const isUserCardOwner = item.owner._id === userData._id;
-            const card = createCard(item._id, item.name, item.link, item.likes, isUserCardOwner ? deleteCard : null, likeCard, openImagePopup);
+            const isUserCardOwner = item.owner._id === currentUserId;
+            const card = createCard(item._id, item.name, item.link, item.likes, isUserCardOwner ? deleteCard : null, likeCard, openImagePopup, currentUserId);
             placesListElement.append(card);
         });
     })
@@ -106,7 +106,7 @@ function popupNewCardHandler(evt) {
 
     addCard(inputPlaceName.value, inputLinkName.value)
         .then(data => {
-            const card = createCard(data._id, data.name, data.link, data.likes, deleteCard, likeCard, openImagePopup);
+            const card = createCard(data._id, data.name, data.link, data.likes, deleteCard, likeCard, openImagePopup, currentUserId);
             placesListElement.prepend(card);
             closeModal(popupNewCard);
         })
@@ -118,6 +118,7 @@ function popupNewCardHandler(evt) {
         })
 }
 popupNewCardFormElement.addEventListener('submit', popupNewCardHandler);
+
 
 document.querySelector('.profile__add-button').addEventListener('click', () => {
     popupNewCardPreOpen();
