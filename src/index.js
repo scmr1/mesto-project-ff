@@ -44,15 +44,15 @@ function setPageUserData(name, about, avatarUrl) {
     profileImageElement.style.backgroundImage = `url(${avatarUrl})`;
 }
 
-export let currentUserId = null;
+export let userId = null;
 Promise.all([getUser(), getInitialCards()])
     .then(([userData, initialCards]) => {
-        currentUserId = userData._id;
+        userId = userData._id;
         setPageUserData(userData.name, userData.about, userData.avatar);
 
         initialCards.forEach((item) => {
-            const isUserCardOwner = item.owner._id === currentUserId;
-            const card = createCard(item._id, item.name, item.link, item.likes, isUserCardOwner ? deleteCard : null, likeCard, openImagePopup, currentUserId);
+            const isUserCardOwner = item.owner._id === userData._id;
+            const card = createCard(item, userId, likeCard, isUserCardOwner ? deleteCard : null, openImagePopup);
             placesListElement.append(card);
         });
     })
@@ -106,7 +106,7 @@ function popupNewCardHandler(evt) {
 
     addCard(inputPlaceName.value, inputLinkName.value)
         .then(data => {
-            const card = createCard(data._id, data.name, data.link, data.likes, deleteCard, likeCard, openImagePopup, currentUserId);
+            const card = createCard(data, userId, likeCard, deleteCard, openImagePopup);
             placesListElement.prepend(card);
             closeModal(popupNewCard);
         })
